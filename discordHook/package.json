@@ -1,0 +1,22 @@
+{
+  "name": "discordhook",
+  "version": "1.0.0",
+  "description": "Discord Hook to MISACA Bot on Discord",
+  "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "discord.js": "12.*",
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "MICASA"
+  ],
+  "author": "JL",
+  "license": "ISC"
+}
