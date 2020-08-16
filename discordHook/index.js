@@ -34,23 +34,26 @@ client.on('message', (receivedMessage) => {
         let argumentsMessage = message;
         let repsonse;
 
+        console.log("Command received: " + primaryMessage)
+        console.log("Arguments: " + argumentsMessage) // There may not be any arguments but maybe in the future
+
         if (primaryMessage === 'droppanties') {
             forSebiSenpai(receivedMessage);
         }
 
         if (primaryMessage === 'version') {
-            getVersion(receivedMessage);
+            getVersion();
         }
 
         if (primaryMessage === 'art_dev') {
-            repsonse = getRandomArt(receivedMessage);
+            repsonse = getRandomArt();
         } else {
             repsonse = messageHandler.getResponse(primaryMessage, argumentsMessage);
         }
 
-        /*receivedMessage.channel.send(repsonse).then(sent => {
+        receivedMessage.channel.send(repsonse).then(sent => {
             //possible post processing
-        });*/
+        });
     }
 })
 
@@ -69,7 +72,6 @@ function getRandomArt() {
     let response = '';
     fetchAllPictureMessages(artChannel)
         .then(msgs => {
-            
             let randomMessage = msgs.random();
             console.log(randomMessage.attachments.size);
             if (randomMessage.attachments.size > 1) {
@@ -195,17 +197,19 @@ function fetchAllPictureMessages(channel) {
                 limit: 100
             })
             .then(collection => {
+                collection = collection.filter(message => {
+                    message.attachments.size > 0
+                });
                 const nextBatch = () => {
                     channel.messages.fetch({
                             limit: 100,
                             before: collection.lastKey()
                         })
                         .then(next => {
-                            let nextPic = next.filter(message => {
+                            next = next.filter(message => {
                                 message.attachments.size > 0
-                                console.log(message.attachments.size);
                             });
-                            let concatenated = collection.concat(nextPic);
+                            let concatenated = collection.concat(next);
                             // resolve when limit is met or when no new msgs were added (reached beginning of channel)
                             if (collection.size == concatenated.size) return resolve(concatenated);
                             collection = concatenated;
