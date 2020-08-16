@@ -55,9 +55,24 @@ responses = [{
 
     },
     {
+        "trigger": "ping",
+        "description": "Basic ping trigger - for fun times",
+        "text": "Here I made it over the ~waves~! Here is your ping UwU",
+        "embed": false,
+        "visible": true
+    },
+    {
+        "trigger": "version",
+        "description": "Return the current version and environment of MISACA",
+        "text": "Version and Env",
+        "embed": false,
+        "visible": true
+    },
+    {
         "trigger": "droppanties",
         "description": "For Sebi-Senpai... (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
-        "text": "BAKA ! How could you demand something like this. But I guess, if it is you Sebi-Senpai... it is ok (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
+        "text": "BAKA ! How could you demand something like this. B-But I guess, if it is you Sebi-Senpai... it is ok (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
+        "embed": false,
         "visible": true
     },
 ]
@@ -81,18 +96,18 @@ function getResponse(command, arguments) {
 
     let response = responses.find(response => response.trigger === command);
 
-    if (response.embed) {
-        response = generateEmbed(response.options);
-    } 
-    else {
-        response = response.text
-    }
-
     //if nothing matches
     if (response === undefined) {
-        response = responses.find(response => response.trigger === 'notRecognized');
+        response = responses.find(response => response.trigger === 'notrecognized');
+        response = response.text;
+        return response;
     }
 
+    if (response.embed) {
+        response = generateEmbed(response.options);
+    } else {
+        response = response.text
+    }
     return response;
 }
 

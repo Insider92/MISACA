@@ -13,7 +13,8 @@
   },
   "scripts": {
     "test": "test",
-    "start": "nodemon index.js"
+    "start": "env NODE_ENV=PRD && nodemon index.js",
+    "dev": "set NODE_ENV=DEV && nodemon index.js"
   },
   "keywords": [
     "MICASA"
