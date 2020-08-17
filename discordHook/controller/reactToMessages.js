@@ -56,8 +56,17 @@ function generateEmbed(options) {
                 response.addField(tag.name, tag.description);
                 responses.forEach(command => {
                     if (command.visible && command.tag=== tag.name){
-                        responseText = command.tag === 'feature' ? '!MISACA ' + command.trigger + '\u000A*suggested by ' + command.suggestedBy + '*' : '!MISACA ' + command.trigger;
-                        response.addField( responseText , command.description)
+                        responseText = '!MISACA ' + command.trigger;
+                        console.log(command.arguments)
+                        if(command.arguments){
+                            command.arguments.forEach(argument => {
+                                responseText += ' [' + argument.name + '] '; 
+                            })
+                        }
+                        if(command.tag === 'feature') responseText += '\u000A*suggested by ' + command.suggestedBy + '*';
+                        let descriptionText = command.description
+                        if(command.example) descriptionText += '\u000A**Example:** *' + command.example + '*';
+                        response.addField(responseText, descriptionText)
                     } 
                 });
                 response.addField('\u200B', '\u200B');

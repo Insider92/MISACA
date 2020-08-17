@@ -16,7 +16,7 @@
 },
 {
     "trigger": "help",
-    "description": "Help Command (Tsundere)",
+    "description": "Help Command",
     "text": "It's not like I wanna to help you ... BAKA >.< But you can use me with '!MISACA [command here]'. Please use '!MISACA commands' to see all commands - Please be gentle",
     "embed": false,
     "visible": true,
@@ -92,7 +92,7 @@
 },
 {
     "trigger": "roadmap",
-    "description": "Return the roadmap and coming features for MISACA - **WIP**",
+    "description": "Returns the roadmap and up coming features for MISACA",
     "text": "Version and Env",
     "embed": false,
     "visible": true,
@@ -101,11 +101,17 @@
 
 {
     "trigger": "suggestion",
-    "description": " You can suggested a feature here - **WIP**",
+    "description": " You can suggested a feature here",
     "text": "Version and Env",
     "embed": false,
     "visible": true,
-    "tag": "suggestion"
+    "tag": "suggestion",
+    "arguments":[{
+        "name": "suggestiontext",
+        "description": "The string for the suggestion",
+        "visible":true
+    }],
+    "example": "!MISACA suggestion This is suggestion Text - it will send to MISACA HQ"
 },
 
 {

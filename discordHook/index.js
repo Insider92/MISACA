@@ -52,8 +52,14 @@ client.on('message', (receivedMessage) => {
             case 'roadmap':
                 getRoadmap(receivedMessage);
                 break;
+            case 'suggestion':
+                sendSuggestion(receivedMessage, argumentsMessage);
+                break;
             case 'droppanties':
                 forSebiSenpai(receivedMessage);
+                break;
+            case 'members':
+                getMembers(receivedMessage);
                 break;
             default:
                 getResponse(receivedMessage, primaryMessage, argumentsMessage);
@@ -110,7 +116,6 @@ function getRandomMaiMai(messageObject) {
             });
         })
         .catch(err => {
-            console.log(err);
             response = errorOccurred(err)
             sendResponse(messageObject, response);
         });
@@ -171,21 +176,51 @@ function getRoadmap(messageObject) {
         .addField('\u200B', '\u200B');
     roadmap.features.forEach(feature => {
         if (feature.visible) {
-            responseText = feature.description + 
-            '\u000A*priority: ' + feature.priority + '*' +
-            '\u000A*difficulty: ' + feature.difficulty + '*' +
-            '\u000A*suggested by ' + feature.suggestedBy + '*'
+            responseText = feature.description +
+                '\u000A*priority: ' + feature.priority + '*' +
+                '\u000A*difficulty: ' + feature.difficulty + '*' +
+                '\u000A*suggested by ' + feature.suggestedBy + '*'
             response.addField(feature.name, responseText);
-
         }
     });
     response
         .setThumbnail(roadmap.options.pictureURL)
         .setTimestamp()
-        .setFooter('Last updated: ' + roadmap.upatedAt + ' by ' + roadmap.updateBy , roadmap.options.pictureURL);
+        .setFooter('Last updated: ' + roadmap.upatedAt + ' by ' + roadmap.updateBy, roadmap.options.pictureURL);
     sendResponse(messageObject, response);
 }
 
+function sendSuggestion(messageObject, argumentsMessage) {
+    suggestion = argumentsMessage.join(' ');
+    let devID = process.env.DEVELOPER_DISCORD_ID;
+    client.users.fetch(devID).then(sent => {
+        console.log(messageObject);
+        let response = new Discord.MessageEmbed()
+            .setTitle('Suggestion Message')
+            .setDescription('I have a suggestion for you Chief')
+            .addField('Sugggested by ' + messageObject.author.username + ' from ' + messageObject.guild.name, suggestion)
+            .addField('Direct Link', 'https://discordapp.com/channels/' + messageObject.guild.id + '/' + messageObject.channel.id + '/' + messageObject.id)
+            .setFooter('Created by MISACA')
+            .setTimestamp();
+        sent.send(response).then(sent => {
+            sendResponse(messageObject, 'This suggestion was safely delivered - We will try contact you, if we have questions');
+        });
+    })
+
+}
+/*
+function getMembers(messageObject) {
+    messageObject.guild.prese
+    messageObject.guild.members.fetch().then(members => {
+        members
+        .filter(member => member.presence.status)
+        .each(user => console.log(user.nickname))
+    })
+
+    //console.log(list.members.size);
+    //list.members.forEach(member => console.log(member.user.username));
+}
+*/
 /*
 function setArt() {
 }
