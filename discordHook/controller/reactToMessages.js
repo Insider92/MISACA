@@ -55,12 +55,49 @@ responses = [{
 
     },
     {
+        "trigger": "dailyart",
+        "description": "Get a random piece of art from the art channel - inspire your inner artist",
+        "text": "",
+        "embed": false,
+        "visible": true
+    },
+    {
+        "trigger": "dailymaimai",
+        "description": "Get a random piece of maimai from the maimai channel - don't run dry on maimai",
+        "text": "",
+        "embed": false,
+        "visible": true
+    },
+    {
         "trigger": "ping",
         "description": "Basic ping trigger - for fun times",
         "text": "Here I made it over the ~waves~! Here is your ping UwU",
         "embed": false,
         "visible": true
     },
+    {
+        "trigger": "goodnight",
+        "description": "Wishes you a good night",
+        "text": "Good night, S- senpai >.< I wish you sweet dreams <3 I will wait here for you UwU",
+        "embed": false,
+        "visible": true
+    },
+    {
+        "trigger": "roadmap",
+        "description": "Return the roadmap and coming features for MISACA - **WIP**",
+        "text": "Version and Env",
+        "embed": false,
+        "visible": true
+    },
+
+    {
+        "trigger": "suggestion",
+        "description": " You can suggested a feature here - **WIP**",
+        "text": "Version and Env",
+        "embed": false,
+        "visible": true
+    },
+
     {
         "trigger": "version",
         "description": "Return the current version and environment of MISACA",
@@ -89,8 +126,6 @@ module.exports = {
  * @returns {string} the repsonse string
  */
 function getResponse(command, arguments) {
-    console.log("Command received: " + command)
-    console.log("Arguments: " + arguments) // There may not be any arguments but maybe in the future
 
     command = command.toLowerCase(); //not case sensitive
 
