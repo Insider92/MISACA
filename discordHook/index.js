@@ -10,8 +10,9 @@ const channelListner = [
 ];
 
 const errorMsg = 'Sorry Senpai, something went wrong - I\'m so sorry >.< If this happens again contact my developer Kid';
-moment.locale('de');
+const roadmap = require('./roadmap.json');
 
+moment.locale('de');
 global.discordClient = client;
 
 client.on('ready', () => {
@@ -48,6 +49,9 @@ client.on('message', (receivedMessage) => {
             case 'dailymaimai':
                 getRandomMaiMai(receivedMessage);
                 break;
+            case 'roadmap':
+                getRoadmap(receivedMessage);
+                break;
             case 'droppanties':
                 forSebiSenpai(receivedMessage);
                 break;
@@ -65,13 +69,12 @@ client.login(bot_secret_token);
 
 function sendResponse(messageObject, response) {
     let message = messageObject.channel.send(response).then(sent => {
-        return sent//possible post processing
+        return sent //possible post processing
     });
-
     return message;
 }
 
-function deleteMessages(channelId, meassageId){
+function deleteMessages(channelId, meassageId) {
     client.channels.cache.get(channelId).messages.fetch(meassageId).then(message => message.delete());
 }
 
@@ -158,6 +161,30 @@ function forSebiSenpai(messageObject) {
         });
     })
 };
+
+function getRoadmap(messageObject) {
+    let response = new Discord.MessageEmbed()
+        .setColor(roadmap.options.color)
+        .setTitle(roadmap.options.title)
+        .setAuthor(roadmap.options.author, roadmap.options.pictureURL)
+        .setDescription(roadmap.options.description)
+        .addField('\u200B', '\u200B');
+    roadmap.features.forEach(feature => {
+        if (feature.visible) {
+            responseText = feature.description + 
+            '\u000A*priority: ' + feature.priority + '*' +
+            '\u000A*difficulty: ' + feature.difficulty + '*' +
+            '\u000A*suggested by ' + feature.suggestedBy + '*'
+            response.addField(feature.name, responseText);
+
+        }
+    });
+    response
+        .setThumbnail(roadmap.options.pictureURL)
+        .setTimestamp()
+        .setFooter('Last updated: ' + roadmap.upatedAt + ' by ' + roadmap.updateBy , roadmap.options.pictureURL);
+    sendResponse(messageObject, response);
+}
 
 /*
 function setArt() {

@@ -1,118 +1,8 @@
 const Discord = require('discord.js');
 const imgurLink = 'https://i.imgur.com/Z5nXjVO.jpg'
 
-responses = [{
-        "trigger": "notrecognized",
-        "description": "Dummy command, if MISACA doesn't have this command",
-        "text": "Sorry I could not understand you (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ Please use '!MISACA commands' to see all commands - Thank you Senpai >.<",
-        "embed": false,
-        "visible": false
-    },
-    {
-        "trigger": "whoareyou",
-        "description": "Small introduction of MISACA",
-        "text": "I'm MISACA - Multiple Information Service and Core Application. I was created by Kid (Johannes) - please don't delete me UwU",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "help",
-        "description": "Help Command (Tsundere)",
-        "text": "It's not like I wanna to help you ... BAKA >.< But you can use me with '!MISACA [command here]'. Please use '!MISACA commands' to see all commands - Please be gentle",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "commands",
-        "description": "Returns a list of commands",
-        "text": "",
-        "embed": true,
-        "visible": true,
-        "options": {
-            "commandTrigger": true,
-            "color": "#ff1e00",
-            "title": "List of commands",
-            "author": "MISACA",
-            "description": "",
-            "URL": "",
-            "pictureURL": imgurLink
-        }
-    },
-    {
-        "trigger": "code",
-        "description": "Returns the link to the GitHub Repo",
-        "text": "",
-        "embed": true,
-        "visible": true,
-        "options": {
-            "color": "#ff1e00",
-            "title": "Source Code for MISACA",
-            "author": "MISACA",
-            "description": "Link to GitHub",
-            "URL": "https://github.com/Insider92/MISACA/",
-            "pictureURL": imgurLink
-        }
-
-    },
-    {
-        "trigger": "dailyart",
-        "description": "Get a random piece of art from the art channel - inspire your inner artist",
-        "text": "",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "dailymaimai",
-        "description": "Get a random piece of maimai from the maimai channel - don't run dry on maimai",
-        "text": "",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "ping",
-        "description": "Basic ping trigger - for fun times",
-        "text": "Here I made it over the ~waves~! Here is your ping UwU",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "goodnight",
-        "description": "Wishes you a good night",
-        "text": "Good night, S- senpai >.< I wish you sweet dreams <3 I will wait here for you UwU",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "roadmap",
-        "description": "Return the roadmap and coming features for MISACA - **WIP**",
-        "text": "Version and Env",
-        "embed": false,
-        "visible": true
-    },
-
-    {
-        "trigger": "suggestion",
-        "description": " You can suggested a feature here - **WIP**",
-        "text": "Version and Env",
-        "embed": false,
-        "visible": true
-    },
-
-    {
-        "trigger": "version",
-        "description": "Return the current version and environment of MISACA",
-        "text": "Version and Env",
-        "embed": false,
-        "visible": true
-    },
-    {
-        "trigger": "droppanties",
-        "description": "For Sebi-Senpai... (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
-        "text": "BAKA ! How could you demand something like this. B-But I guess, if it is you Sebi-Senpai... it is ok (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
-        "embed": false,
-        "visible": true
-    },
-]
+const tags = require('../tags.json');
+const responses = require('../respones.json');
 
 module.exports = {
     getResponse: getResponse
@@ -161,11 +51,19 @@ function generateEmbed(options) {
 
     //needs to be beautifed - but WIP
     if (options.commandTrigger) {
-        responses.forEach(command => {
-            if (command.visible) response.addField('!MISACA ' + command.trigger, command.description)
-        });
+        tags.forEach(tag => {
+            if(tag.visible){
+                response.addField(tag.name, tag.description);
+                responses.forEach(command => {
+                    if (command.visible && command.tag=== tag.name){
+                        responseText = command.tag === 'feature' ? '!MISACA ' + command.trigger + '\u000A*suggested by ' + command.suggestedBy + '*' : '!MISACA ' + command.trigger;
+                        response.addField( responseText , command.description)
+                    } 
+                });
+                response.addField('\u200B', '\u200B');
+            }  
+        })
     }
-
     response
         .setThumbnail(options.pictureURL)
         .setTimestamp();

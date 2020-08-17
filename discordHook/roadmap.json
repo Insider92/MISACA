@@ -1,0 +1,77 @@
+{   
+    "upatedAt": "17.08.2020",
+    "updateBy": "Kid",
+    "options": {
+        "color": "#ff1e00",
+        "title": "Roadmap",
+        "author": "MISACA",
+        "description": "Senpai ... >.< This will be my features in the future.\u000AMaybe it will help you <3",
+        "URL": "",
+        "pictureURL": "https://i.imgur.com/Z5nXjVO.jpg"
+    },
+    "features": [{
+            "name":"Birthday Reminder",
+            "description":"A feature, in which you can see upcoming Birthdays of the members of disord - the participation of the members is optional. You add or delete your Birthday via DM. Optional: Bot can congratulate in public or via DM",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"high",
+            "difficulty":"middle",
+            "visible":true
+        },
+        {
+            "name":"Food Suggestion",
+            "description":"A feature, where you ask which food you should eat/cook. You can add options like what type of meal (fish, meat, vegetables etc.) and which time (breakfast, dinner etc.). Optional: The bot offers you a dish from your nearest delivery service",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"low",
+            "difficulty":"very high",
+            "visible":true
+        },
+        {
+            "name":"Art Suggestion",
+            "description":"A feature, where you ask for some inspiration for your next art (draw a cyperpunk pirate with dragon wings etc.). I have no fcking idea where I can get creative themes, but let's try...",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"low",
+            "difficulty":"no idea",
+            "visible":true
+        },
+        {
+            "name":"Daily news",
+            "description":"A feature, where you ask for some daily news - basically google news api, i guess",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"low",
+            "difficulty":"middle",
+            "visible":true
+        },
+        {
+            "name":"Daily vocables",
+            "description":"A feature, where you ask for some daily vocables. No idea, where I can get them & and what the specs should be",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"low",
+            "difficulty":"no idea",
+            "visible":true
+        },
+        {
+            "name":"Hentai Twitter Link",
+            "description":"Gives you a random hentai link from twitter",
+            "suggestedBy":"Camax",
+            "priority":"low",
+            "difficulty":"low",
+            "visible":true
+        },
+        {
+            "name":"Valorant Fun Stats",
+            "description":"Drops some random fun stats from valorant, about the members of the discord (Eneya has bought Kid weapons worth 102340 Credits etc.)",
+            "suggestedBy":"Kid",
+            "priority":"middle",
+            "difficulty":"high",
+            "visible":true
+        },
+        {
+            "name":"League of Legends Fun Stats",
+            "description":"Drops some random fun stats from league, about the members of the discord (Unicorn has dealt 10k damage on Qiyana in the last 10 games)",
+            "suggestedBy":"Kid",
+            "priority":"middle",
+            "difficulty":"high",
+            "visible":true
+        }
+    ]
+}

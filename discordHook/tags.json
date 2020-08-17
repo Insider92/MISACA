@@ -1,0 +1,29 @@
+[{
+    "name": "error",
+    "description": "error commands",
+    "visible": false
+},
+{
+    "name": "information",
+    "description": "Commands to get information about MISACA - Knowlegde is power",
+    "visible": true
+
+}, {
+    "name": "feature",
+    "description": "Commands for different features of MISACA - I was made for this",
+    "visible": true
+
+},  {
+    "name": "suggestion",
+    "description": "Commads to get upcoming features or suggestion features",
+    "visible": true
+
+},
+
+{
+    "name": "fun",
+    "description": "Commands just for fun - Let's have fun together <3",
+    "visible": true
+
+}
+]
