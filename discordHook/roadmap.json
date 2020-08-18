@@ -72,6 +72,46 @@
             "priority":"middle",
             "difficulty":"high",
             "visible":true
+        },
+        {
+            "name":"Baka",
+            "description":"Baka: Eine Funktion mit der ich misaca sage dass sie sich entschuldigen soll, weil sie meinen vorherigen command nicht erkannt hat",
+            "suggestedBy":"Pixelbuddha",
+            "priority":"low",
+            "difficulty":"low",
+            "visible":true
+        },
+        {
+            "name":"Good Morning",
+            "description":"Eine Funktion wo Misaca mich morgens begrüßt wenn ich guten morgen irgendwo in den Discord schreibe wo Misaca drauf zugriff hat. Von mir aus in dem Chat, von mir aus aber auch per PM. Am besten mit irgendwas was wholesome ist.",
+            "suggestedBy":"Pixelbuddha",
+            "priority":"middle",
+            "difficulty":"middle",
+            "visible":true
+        },
+        {
+            "name":"React to PM",
+            "description":"MISACA can also react to your private messages - maybe with some special options",
+            "suggestedBy":"Kid",
+            "priority":"high",
+            "difficulty":"middle",
+            "visible":true
+        },
+        {
+            "name":"React to all Channels",
+            "description":"Xou can use MISACA in all channels on your server",
+            "suggestedBy":"Kid",
+            "priority":"high",
+            "difficulty":"low",
+            "visible":true
+        },
+        {
+            "name":"Diverse Games",
+            "description":"MISACA can play games with you - Zitate raten etc. - TBA",
+            "suggestedBy":"von der Arschigkeit her",
+            "priority":"middle",
+            "difficulty":"middle",
+            "visible":true
         }
     ]
 }

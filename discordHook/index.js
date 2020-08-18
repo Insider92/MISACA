@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
 const messageHandler = require('./controller/reactToMessages');
+const helper = require('./helper');
 require('dotenv').config();
 
 const channelListner = [
@@ -9,7 +10,6 @@ const channelListner = [
     '744585787932147794' ///Yuumiste Server der Welt - TestSpace
 ];
 
-const errorMsg = 'Sorry Senpai, something went wrong - I\'m so sorry >.< If this happens again contact my developer Kid';
 const roadmap = require('./roadmap.json');
 
 moment.locale('de');
@@ -76,7 +76,12 @@ client.login(bot_secret_token);
 function sendResponse(messageObject, response) {
     let message = messageObject.channel.send(response).then(sent => {
         return sent //possible post processing
+    })
+    .catch(err => {
+        response = helper.errorOccurred(err)
+        messageObject.channel.send(response);
     });
+
     return message;
 }
 
@@ -84,18 +89,30 @@ function deleteMessages(channelId, meassageId) {
     client.channels.cache.get(channelId).messages.fetch(meassageId).then(message => message.delete());
 }
 
+/*-------------------------------- Function which get trigger by keywords ----------------------------------------------- */
+
+//default
 function getResponse(messageObject, primaryMessage, argumentsMessage) {
     let response = messageHandler.getResponse(primaryMessage, argumentsMessage);
     sendResponse(messageObject, response);
 }
 
+//version
+function getVersion(messageObject) {
+    let version = process.env.npm_package_version;
+    let env = process.env.NODE_ENV;
+    let response = 'Beep Boop Beep! Hello fellow Human - This are my definitely Human Specs: Version ' + version + ' / Environment ' + env
+    sendResponse(messageObject, response);
+}
+
+//maimai
 function getRandomMaiMai(messageObject) {
     let maiMaiChannel = client.channels.cache.get('290254724031184899');
     let responses = [];
 
     let pleaseWaitText = 'Your maimai is so big, senpai ☆⌒(>。<) This could take some time - please wait';
     let waitMessage = sendResponse(messageObject, pleaseWaitText);
-    fetchAllMessages(maiMaiChannel)
+    helper.fetchAllMessages(maiMaiChannel)
         .then(msgs => {
             let randomMessage = msgs.random();
             responses.push('>>> ' + randomMessage.content)
@@ -116,15 +133,16 @@ function getRandomMaiMai(messageObject) {
             });
         })
         .catch(err => {
-            response = errorOccurred(err)
+            response = helper.errorOccurred(err)
             sendResponse(messageObject, response);
         });
 }
 
+//dailyart
 function getRandomArt(messageObject) {
     let artChannel = client.channels.cache.get('670614182961610752');
     let responses = [];
-    fetchAllPictureMessages(artChannel)
+    helper.fetchAllPictureMessages(artChannel)
         .then(msgs => {
             let randomMessage = msgs.random();
             responses.push(randomMessage.attachments.random().url);
@@ -139,20 +157,12 @@ function getRandomArt(messageObject) {
             });
         })
         .catch(err => {
-            response = errorOccurred(err)
+            response = helper.errorOccurred(err)
             sendResponse(messageObject, response);
         });
 }
 
-
-function getVersion(messageObject) {
-    let version = process.env.npm_package_version;
-    let env = process.env.NODE_ENV;
-    let response = 'Beep Boop Beep! Hello fellow Human - This are my definitely Human Specs: Version ' + version + ' / Environment ' + env
-    sendResponse(messageObject, response);
-}
-
-//needs to be beautifed - but WIP
+//droppanties needs to be beautifed - but WIP
 function forSebiSenpai(messageObject) {
 
     let workingChannel = client.channels.cache.get('314747324637380609'); //working channel  
@@ -163,10 +173,15 @@ function forSebiSenpai(messageObject) {
         workingChannel.send(process.env.ONLY_FOR_SEBI_SENPAI).then(sent => {
             let text = 'https://discordapp.com/channels/' + sent.guild.id + '/' + sent.channel.id + '/' + sent.id;
             returnToSender.send(text);
+        })
+        .catch(err => {
+            response = helper.errorOccurred(err)
+            sendResponse(messageObject, response);
         });
     })
 };
 
+//roadmap
 function getRoadmap(messageObject) {
     let response = new Discord.MessageEmbed()
         .setColor(roadmap.options.color)
@@ -184,17 +199,24 @@ function getRoadmap(messageObject) {
         }
     });
     response
+        .addField('\u200B', '\u200B')
+        .addField('You have an idea ?', 'Submit your suggestion with:\u000A**!MISACA suggestion [suggestiontext]**\u000ASee **!MISACA commands** for help\u000A\u000AWe looking forward to it!')
         .setThumbnail(roadmap.options.pictureURL)
         .setTimestamp()
         .setFooter('Last updated: ' + roadmap.upatedAt + ' by ' + roadmap.updateBy, roadmap.options.pictureURL);
     sendResponse(messageObject, response);
 }
 
+//suggestion
 function sendSuggestion(messageObject, argumentsMessage) {
+    let emptyMessage = 'You need to provivde some idea, senpai >.< suggestion message should not be empty! If you need help try !MISACA commands';
+    if(argumentsMessage.length === 0){
+        sendResponse(messageObject, emptyMessage);
+        return;
+    }  
     suggestion = argumentsMessage.join(' ');
     let devID = process.env.DEVELOPER_DISCORD_ID;
     client.users.fetch(devID).then(sent => {
-        console.log(messageObject);
         let response = new Discord.MessageEmbed()
             .setTitle('Suggestion Message')
             .setDescription('I have a suggestion for you Chief')
@@ -204,6 +226,10 @@ function sendSuggestion(messageObject, argumentsMessage) {
             .setTimestamp();
         sent.send(response).then(sent => {
             sendResponse(messageObject, 'This suggestion was safely delivered - We will try contact you, if we have questions');
+        })
+        .catch(err => {
+            response = helper.errorOccurred(err)
+            sendResponse(messageObject, response);
         });
     })
 
@@ -227,98 +253,4 @@ function setArt() {
 
 function getFood() {
 }
-
-function getMembers(messageObject) {
-    const list = client.guilds.get("335507048017952771");
-    list.members.forEach(member => console.log(member.user.username));
-}*/
-
-
-//------------------------------ Helper ---------------------------
-
-
-function errorOccurred(err) {
-    return errorMsg;
-};
-
-function fetchManyMessages(channel, limit) {
-    return new Promise((resolve, reject) => {
-        channel.messages.fetch({
-                limit: limit < 100 ? limit : 100
-            })
-            .then(collection => {
-                const nextBatch = () => {
-                    let remaining = limit - collection.size;
-                    channel.messages.fetch({
-                            limit: remaining < 100 ? remaining : 100,
-                            before: collection.lastKey()
-                        })
-                        .then(next => {
-                            let concatenated = collection.concat(next);
-                            // resolve when limit is met or when no new msgs were added (reached beginning of channel)
-                            if (collection.size >= limit || collection.size == concatenated.size || limit === concatenated.size) return resolve(concatenated);
-
-                            collection = concatenated;
-                            nextBatch();
-                        })
-                        .catch(error => reject(error));
-                }
-                nextBatch();
-            })
-            .catch(error => reject(error));
-    });
-};
-
-function fetchAllMessages(channel) {
-    return new Promise((resolve, reject) => {
-        channel.messages.fetch({
-                limit: 100
-            })
-            .then(collection => {
-                const nextBatch = () => {
-                    channel.messages.fetch({
-                            limit: 100,
-                            before: collection.lastKey()
-                        })
-                        .then(next => {
-                            let concatenated = collection.concat(next);
-                            // resolve when limit is met or when no new msgs were added (reached beginning of channel)
-                            if (collection.size == concatenated.size) return resolve(concatenated);
-                            collection = concatenated;
-                            nextBatch();
-                        })
-                        .catch(error => reject(error));
-                }
-                nextBatch();
-            })
-            .catch(error => reject(error));
-    });
-}
-
-function fetchAllPictureMessages(channel) {
-    return new Promise((resolve, reject) => {
-        channel.messages.fetch({
-                limit: 100
-            })
-            .then(collection => {
-                collection = collection.filter(message => message.attachments.size > 0);
-                const nextBatch = () => {
-                    channel.messages.fetch({
-                            limit: 100,
-                            before: collection.lastKey()
-                        })
-                        .then(next => {
-                            next = next.filter(message => message.attachments.size > 0);
-                            let concatenated = collection.concat(next);
-                            // resolve when limit is met or when no new msgs were added (reached beginning of channel)
-                            if (collection.size == concatenated.size) return resolve(concatenated);
-                            collection = concatenated;
-                            nextBatch();
-                        })
-                        .catch(error => reject(error));
-                }
-                nextBatch();
-            })
-            .catch(error => reject(error));
-    });
-}
+*/
